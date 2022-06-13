@@ -4,10 +4,14 @@ ifndef FILES
 endif
 FILES_OUT = $(addprefix ${OUT_DIR}/,${FILES})
 UNAME_M := $(shell uname -m)
+UNAME_S := $(shell uname -s)
 
 ifeq ($(OS),Windows_NT)
 	PLATFORM ?= windows
 	DEST ?= windows
+else ifeq ($(UNAME_S),Darwin)
+        PLATFORM ?= darwin
+		DEST ?=darwin
 else ifeq ($(UNAME_M),x86_64)
 	PLATFORM ?= linux
 	DEST ?= linux
@@ -21,6 +25,8 @@ ARCH =
 all:
 ifeq ($(OS),Windows_NT)
 	make win
+else ifeq ($(UNAME_S),Darwin)
+	make darwin
 else ifeq ($(UNAME_M),x86_64)
 	make linux
 else ifeq ($(UNAME_M),armv7l)
@@ -36,6 +42,9 @@ win: ${OUT_DIR} ${FILES_OUT:=.exe}
 arm32: PLATFORM = linux
 arm32: ARCH = arm
 arm32: ${OUT_DIR} ${FILES_OUT}
+
+darwin: PLATFORM = darwin
+darwin: ${OUT_DIR} ${FILES_OUT}
 
 .FORCE:
 ${OUT_DIR}/%: .FORCE
