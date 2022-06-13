@@ -16,3 +16,6 @@
 .vscode
 
 /pkg/pb/*.pb.go
+
+*.pem
+bin/*

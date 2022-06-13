@@ -3,6 +3,7 @@ package gtls
 import (
 	"crypto/tls"
 	"crypto/x509"
+	"errors"
 	"io/ioutil"
 
 	"google.golang.org/grpc/credentials"
@@ -29,7 +30,7 @@ func (c *Client) GetCredentialsByCA() (credentials.TransportCredentials, error) 
 	}
 
 	if ok := certPool.AppendCertsFromPEM(ca); !ok {
-		return nil, err
+		return nil, errors.New("certPool.AppendCertsFromPEM err")
 	}
 	credential := credentials.NewTLS(&tls.Config{
 		Certificates: []tls.Certificate{cert},

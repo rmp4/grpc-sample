@@ -28,9 +28,9 @@ const PORT = "9001"
 
 func main() {
 	tlsServer := gtls.Server{
-		CaFile:   "../../configs/ca.pem",
-		CertFile: "../../configs/server/server.pem",
-		KeyFile:  "../../configs/server/server.key",
+		CaFile:   "./configs/ca-cert.pem",
+		CertFile: "./configs/server/server-cert.pem",
+		KeyFile:  "./configs/server/server-key.pem",
 	}
 	c, err := tlsServer.GetCredentialsByCA()
 	if err != nil {
