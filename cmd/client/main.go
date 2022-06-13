@@ -27,8 +27,12 @@ func main() {
 	if err != nil {
 		log.Fatalf("GetTLSCredentialsByCA err: %v", err)
 	}
+	auth := gtls.Authentication{
+		User:     "admin",
+		Password: "123",
+	}
 
-	conn, err := grpc.Dial(":"+PORT, grpc.WithTransportCredentials(c))
+	conn, err := grpc.Dial(":"+PORT, grpc.WithTransportCredentials(c), grpc.WithPerRPCCredentials(&auth))
 	if err != nil {
 		log.Fatalf("grpc.Dial err: %v", err)
 	}

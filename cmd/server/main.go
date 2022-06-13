@@ -14,9 +14,20 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-type SearchService struct{}
+type SearchService struct {
+	auth *gtls.Authentication
+}
 
 func (s *SearchService) Search(ctx context.Context, r *pb.SearchRequest) (*pb.SearchResponse, error) {
+	auth := gtls.Authentication{
+		User:     "admin",
+		Password: "123",
+	}
+	s.auth = &auth
+	// Need to add on every function
+	if err := s.auth.Auth(ctx); err != nil {
+		return nil, err
+	}
 	if ctx.Err() == context.Canceled {
 		return nil, status.Errorf(codes.Canceled, "searchService.Search canceled")
 	}
